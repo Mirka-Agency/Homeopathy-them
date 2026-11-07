@@ -1,0 +1,28 @@
+/* Shared Hero scroll animation helpers — visual identity stays in each concept CSS */
+
+[data-hero] {
+  position: relative;
+}
+
+[data-hero-visual],
+[data-hero-copy] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+[data-hero-visual] {
+  transform-origin: center center;
+}
+
+[data-hero-copy] {
+  transform-origin: top center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-hero-visual],
+  [data-hero-copy] {
+    transform: none !important;
+    opacity: 1 !important;
+    will-change: auto;
+  }
+}
