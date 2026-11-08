@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/serenity-style.css">
   <link rel="stylesheet" href="../shared/hero-scroll.css">
+  <link rel="stylesheet" href="../shared/hero-video.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -61,12 +62,25 @@
           </div>
         </div>
         <figure class="hero__visual" data-hero-visual>
-          <img
-            class="hero__image"
-            src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80"
-            alt="Soft daylight on green botanical leaves in a peaceful interior setting"
-            width="1400"
-            height="1600">
+          <div class="hero-media hero__media-frame">
+            <img
+              class="hero-poster"
+              src="../shared/images/hero-meadow-poster.jpg"
+              alt=""
+              width="1920"
+              height="1080">
+            <video
+              class="hero-video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="../shared/images/hero-meadow-poster.jpg">
+              <source src="../shared/videos/hero-meadow-optimized.mp4" type="video/mp4">
+            </video>
+            <div class="hero__video-overlay" aria-hidden="true"></div>
+          </div>
         </figure>
       </div>
     </section>

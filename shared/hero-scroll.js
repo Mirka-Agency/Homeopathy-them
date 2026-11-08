@@ -1,5 +1,5 @@
 /**
- * HomeoClinic — shared Hero scroll animation
+ * HomeoClinic — shared Hero scroll animation + video motion preferences
  * Subtle parallax + fade across all design concepts.
  */
 (function () {
@@ -10,12 +10,33 @@
 
   var visual = hero.querySelector("[data-hero-visual]");
   var copy = hero.querySelector("[data-hero-copy]");
+  var videos = hero.querySelectorAll(".hero-video");
   if (!visual && !copy) return;
 
   var reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   var mobileQuery = window.matchMedia("(max-width: 767px)");
   var ticking = false;
   var lastProgress = -1;
+
+  function syncHeroVideo() {
+    for (var i = 0; i < videos.length; i++) {
+      var video = videos[i];
+      if (reduceMotionQuery.matches || mobileQuery.matches) {
+        video.pause();
+        video.removeAttribute("autoplay");
+        video.preload = "none";
+      } else {
+        video.muted = true;
+        video.setAttribute("playsinline", "");
+        video.setAttribute("autoplay", "");
+        video.preload = "metadata";
+        var playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(function () {});
+        }
+      }
+    }
+  }
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -101,6 +122,7 @@
   }
 
   function onMotionPreferenceChange() {
+    syncHeroVideo();
     if (reduceMotionQuery.matches) {
       resetStyles();
     } else {
@@ -108,8 +130,13 @@
     }
   }
 
+  function onViewportChange() {
+    syncHeroVideo();
+    requestTick();
+  }
+
   window.addEventListener("scroll", requestTick, { passive: true });
-  window.addEventListener("resize", requestTick, { passive: true });
+  window.addEventListener("resize", onViewportChange, { passive: true });
 
   if (typeof reduceMotionQuery.addEventListener === "function") {
     reduceMotionQuery.addEventListener("change", onMotionPreferenceChange);
@@ -118,10 +145,11 @@
   }
 
   if (typeof mobileQuery.addEventListener === "function") {
-    mobileQuery.addEventListener("change", requestTick);
+    mobileQuery.addEventListener("change", onViewportChange);
   } else if (typeof mobileQuery.addListener === "function") {
-    mobileQuery.addListener(requestTick);
+    mobileQuery.addListener(onViewportChange);
   }
 
+  syncHeroVideo();
   requestTick();
 })();
